@@ -1,3 +1,7 @@
+import uuid
+import time
+import calendar
+
 class UserClickedOnButtonEvent:
     def __init__(self, event_id, timestamp, button_id, event_type = 'UserClickedOnButton'):
         self._event_id_ = event_id
@@ -16,6 +20,11 @@ class UserClickedOnButtonEvent:
     
     def button_id(self):
         return self._button_id_
+
+    @classmethod
+    def create(cls, button_id):
+        timestamp, event_id = calendar.timegm(time.gmtime()), uuid.uuid1()
+        return cls(event_id, timestamp, button_id)
 
 
 class UserLongPressedEvent:
@@ -38,10 +47,18 @@ class UserLongPressedEvent:
         return self._x_
     
     def y(self):
-        return self._y_    
+        return self._y_
+
+    @classmethod
+    def create(cls, x, y):
+        timestamp, event_id = calendar.timegm(time.gmtime()), uuid.uuid1()
+        return cls(event_id, timestamp, x, y)    
+
 
 # UserClickedOnButtonEvent("b5796505-68fd-40d5-814a-9d31f3f084b0", 1619146052, "close_button")
 # UserClickedOnButtonEvent(event_id="b5796505-68fd-40d5-814a-9d31f3f084b0", timestamp=1619146052, button_id="close_button")
+# UserClickedOnButtonEvent.create(button_id='blabla')
 
 # UserLongPressedEvent("1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", 1619146123, 340, 420)
 # UserLongPressedEvent(event_id="1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", timestamp=1619146123, x=340, y=420)
+# UserLongPressedEvent.create(x=340, y=420)
