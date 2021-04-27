@@ -1,16 +1,14 @@
-import uuid
-import time
-import calendar
+import uuid, ulid
+import time, calendar
 
 class UserClickedOnButtonEvent:
-    def __init__(self, event_id, timestamp, button_id, event_type = 'UserClickedOnButton'):
+    def __init__(self, event_id, button_id, event_type = 'UserClickedOnButton'):
         self._event_id_ = event_id
-        self._timestamp_ = timestamp
         self._event_type_ = event_type
         self._button_id_ = button_id
     
     def timestamp(self):
-        return self._timestamp_
+        return ulid.from_uuid(self._event_id_).timestamp().int
     
     def event_id(self):
         return self._event_id_
@@ -23,19 +21,18 @@ class UserClickedOnButtonEvent:
 
     @classmethod
     def create(cls, button_id):
-        timestamp, event_id = calendar.timegm(time.gmtime()), uuid.uuid1()
-        return cls(event_id, timestamp, button_id)
+        event_id = uuid.uuid1()
+        return cls(event_id, button_id)
 
 
 class UserLongPressedEvent:
-    def __init__(self, event_id, timestamp, x, y, event_type = 'UserLongPressed'):
+    def __init__(self, event_id, x, y, event_type = 'UserLongPressed'):
         self._event_id_ = event_id
-        self._timestamp_ = timestamp
         self._event_type_ = event_type
         self._x_, self._y_ = x, y
     
     def timestamp(self):
-        return self._timestamp_
+        return ulid.from_uuid(self._event_id_).timestamp().int
     
     def event_id(self):
         return self._event_id_
@@ -51,14 +48,14 @@ class UserLongPressedEvent:
 
     @classmethod
     def create(cls, x, y):
-        timestamp, event_id = calendar.timegm(time.gmtime()), uuid.uuid1()
-        return cls(event_id, timestamp, x, y)    
+        event_id = uuid.uuid1()
+        return cls(event_id, x, y)    
 
 
-# UserClickedOnButtonEvent("b5796505-68fd-40d5-814a-9d31f3f084b0", 1619146052, "close_button")
-# UserClickedOnButtonEvent(event_id="b5796505-68fd-40d5-814a-9d31f3f084b0", timestamp=1619146052, button_id="close_button")
+# UserClickedOnButtonEvent("b5796505-68fd-40d5-814a-9d31f3f084b0", "close_button")
+# UserClickedOnButtonEvent(event_id="b5796505-68fd-40d5-814a-9d31f3f084b0", button_id="close_button")
 # UserClickedOnButtonEvent.create(button_id='blabla')
 
-# UserLongPressedEvent("1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", 1619146123, 340, 420)
-# UserLongPressedEvent(event_id="1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", timestamp=1619146123, x=340, y=420)
+# UserLongPressedEvent("1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", 340, 420)
+# UserLongPressedEvent(event_id="1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", x=340, y=420)
 # UserLongPressedEvent.create(x=340, y=420)
