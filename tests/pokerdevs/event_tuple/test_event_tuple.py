@@ -7,8 +7,18 @@ logger = logging.getLogger(__name__)
 
 
 def generate_test_events():
-    yield ("b5796505-68fd-40d5-814a-9d31f3f084b0", 1619146052, "UserClickedOnButton", "close_button")
-    yield ("1d0bfda2-fe1d-4c61-a8bb-2c7df89beddf", 1619146123, "UserLongPressed", 340, 420)
+    yield ("0", 9999999999, "UserLongPressed", 344, 424)
+    yield ("1", 1000000000, "UserClickedOnButton", "close_button")
+    yield ("2", 9999999999, "UserLongPressed", 344, 424)
+    yield ("3", 1000000000, "UserClickedOnButton", "close_button")
+    yield ("4", 9999999999, "UserLongPressed", 344, 424)
+    yield ("5", 1000000000, "UserClickedOnButton", "close_button")
+    yield ("6", 9999999999, "UserLongPressed", 344, 424)
+    yield ("7", 1000000000, "UserClickedOnButton", "close_button")
+    yield ("8", 9999999999, "UserLongPressed", 344, 424)
+    yield ("9", 1000000000, "UserClickedOnButton", "close_button")
+    yield ("10", 9999999999, "UserLongPressed", 344, 424)
+
 
 def serialize_event(event):
     return f"Event '{event[2]}' occurred at {event[1]} with ID: {event[0]}"
@@ -17,7 +27,21 @@ def serialize_event(event):
 
 def test_event_tuple():
     logger.info(f"Starting the test !")
-    for event in generate_test_events():
-        print(serialize_event(event))
+    for i, event in enumerate(generate_test_events()):
+        assert event[0] == str(i)
+        if i % 2 == 0:
+            assert len(event) == 5
+            assert event[1] == 9999999999
+        else:
+            assert len(event) == 4
+            assert event[1] == 1000000000
+        
+        if event[2] == 'UserLongPressed':
+            assert event[3] and event[4]
+            assert serialize_event(event) == f"Event 'UserLongPressed' occurred at 9999999999 with ID: {i}"
+        else:
+            assert event[3]
+            assert serialize_event(event) == f"Event 'UserClickedOnButton' occurred at 1000000000 with ID: {i}"
+        
 
     # pytest.fail(f"YOU NEED TO FINISH THIS")
