@@ -1,6 +1,22 @@
 ### Challenge-5
-We can create a function EventTuple, which will handle arg1 and arg2,
-where the arg1 is the type of event and arg2 is the list of event arguments.
-So we can make switch with event types(arg1) and than return one of the already written classes,
-but at first we should cast the arguments in right type which is also given(str or int) or we can write method which cast tup[0] as tup[1].
-RET something like this: UserClickedOnButtonEvent.create(str(arg2[0][0])) or UserLongPressedEvent(int(arg2[0][0]), int(arg2[1][0]))
+We can Have EventTuple Class with one field for example: eventType.
+So when we want to create EventTuple("some_event_type_here", [(field1, str), (field2, int), ...]) like this,
+In __init__() method - we will set self.eventType as "some_event_type_here", and for the rest of the arguemnts in the list
+we can make for loop and use SETATTR like this setattr(self, field1, str), setattr(self, field2, int) like this.
+So we will have all needed fileds for the returned event.
+
+class EventTuple:
+    def __init__(self, etype, attrs):
+        self.eventType = etype
+        for x in attrs:
+            setattr(self, x[0], x[1]) # or check x[1] type and then set some default value.
+
+e = EventTuple("some_event_type_here", [(field1, str), (field2, int)])
+we can use now e.field1 pr e.field2
+
+
+We can use this method to change display of event type, if needed.
+def __repr__(self):
+  return self.eventType
+
+we can use __import__(module) or getattr(module, name) funcs to manage general class as we want to.
