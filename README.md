@@ -1,10 +1,15 @@
 ### Challenge-5
 We can Have EventTuple Class with one field for example: eventType.
+
 So when we want to create EventTuple("some_event_type_here", [(field1, str), (field2, int), ...]) like this,
+
 In __init__() method - we will set self.eventType as "some_event_type_here", and for the rest of the arguemnts in the list
+
 we can make for loop and use SETATTR like this setattr(self, field1, str), setattr(self, field2, int) like this.
+
 So we will have all needed fileds for the returned event.
 
+'''
 class EventTuple:
     def __init__(self, etype, attrs):
         self.eventType = etype
@@ -13,6 +18,8 @@ class EventTuple:
 
 e = EventTuple("some_event_type_here", [(field1, str), (field2, int)])
 we can use now e.field1 pr e.field2
+
+'''
 
 
 We can use this method to change display of event type, if needed.
